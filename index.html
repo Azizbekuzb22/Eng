@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Visit — Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: #1e2a4a;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        header h1 span { color: #f0b429; }
+
+        .lang-toggle {
+            display: flex;
+            gap: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            padding: 3px;
+        }
+
+        .lang-btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: #f0b429;
+            color: #1e2a4a;
+        }
+
+        /* SLIDES */
+        .slides {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slide {
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .slide:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .slide img {
+            width: 100%;
+            display: block;
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            cursor: zoom-out;
+        }
+
+        .modal.open { opacity: 1; visibility: visible; }
+
+        .modal img {
+            max-width: 94vw;
+            max-height: 92vh;
+            border-radius: 10px;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal.open img { transform: scale(1); }
+
+        .modal-btn {
+            position: fixed;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 10000;
+        }
+
+        .modal-btn:hover { background: rgba(255,255,255,0.3); }
+
+        .close-btn { top: 1rem; right: 1rem; }
+        .prev-btn { top: 50%; left: 1rem; transform: translateY(-50%); }
+        .next-btn { top: 50%; right: 1rem; transform: translateY(-50%); }
+
+        .counter {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10000;
+        }
+
+        /* CAPTION BAR (O'zbekcha) */
+        .caption-bar {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10000;
+            max-width: 80vw;
+            text-align: center;
+            display: none;
+        }
+
+        body.uz .caption-bar { display: block; }
+
+        @media (max-width: 768px) {
+            header { padding: 0.75rem 1rem; }
+            header h1 { font-size: 0.95rem; }
+            .slides { padding: 0 0.75rem; gap: 1rem; margin: 1.5rem auto; }
+            .prev-btn { left: 0.5rem; }
+            .next-btn { right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Exchange <span>Visit</span></h1>
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btnEN" onclick="setLang('en')">🇬🇧 English</button>
+            <button class="lang-btn" id="btnUZ" onclick="setLang('uz')">🇺🇿 O'zbekcha</button>
+        </div>
+    </header>
+
+    <div class="slides">
+        <div class="slide" onclick="openModal(0)"><img src="Screenshot 2026-10-14 200622.png" alt="Slide 1"></div>
+        <div class="slide" onclick="openModal(1)"><img src="Screenshot 2026-10-14 200635.png" alt="Slide 2"></div>
+        <div class="slide" onclick="openModal(2)"><img src="Screenshot 2026-10-14 200649.png" alt="Slide 3"></div>
+        <div class="slide" onclick="openModal(3)"><img src="Screenshot 2026-10-14 200700.png" alt="Slide 4"></div>
+        <div class="slide" onclick="openModal(4)"><img src="Screenshot 2026-10-14 200710.png" alt="Slide 5"></div>
+        <div class="slide" onclick="openModal(5)"><img src="Screenshot 2026-10-14 200736.png" alt="Slide 6"></div>
+        <div class="slide" onclick="openModal(6)"><img src="Screenshot 2026-10-14 200752.png" alt="Slide 7"></div>
+        <div class="slide" onclick="openModal(7)"><img src="Screenshot 2026-10-14 200800.png" alt="Slide 8"></div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal" onclick="closeModal()">
+        <button class="modal-btn close-btn" onclick="closeModal()">✕</button>
+        <button class="modal-btn prev-btn" onclick="prev(event)">❮</button>
+        <button class="modal-btn next-btn" onclick="next(event)">❯</button>
+        <img id="modalImg" src="" alt="" onclick="event.stopPropagation()">
+        <div class="caption-bar" id="caption"></div>
+        <div class="counter" id="counter"></div>
+    </div>
+
+    <script>
+        const srcs = [
+            'Screenshot 2026-10-14 200622.png',
+            'Screenshot 2026-10-14 200635.png',
+            'Screenshot 2026-10-14 200649.png',
+            'Screenshot 2026-10-14 200700.png',
+            'Screenshot 2026-10-14 200710.png',
+            'Screenshot 2026-10-14 200736.png',
+            'Screenshot 2026-10-14 200752.png',
+            'Screenshot 2026-10-14 200800.png'
+        ];
+
+        const uzCaptions = [
+            'Almashinuv tashrifi — Unutilmas 4 kunlik sarguzasht rejasi',
+            "Umumiy ko'rinish — Kelish va Tanishuv, Darslar, Muhit, Sport",
+            'Kirish — Loyihaning maqsadi va asoslari',
+            'Muammolar — Almashinuv tashrifini tashkil etishdagi qiyinchiliklar',
+            '1-kun — Kelish va Tanishuv, Maqsad va Natijalar',
+            '2-kun — Darslar va Sport, futbol va voleybol',
+            "3-kun — Madaniyat va San'at kuni, She'riyat bellashuvi",
+            "Rahmat — E'tiboringiz uchun"
+        ];
+
+        let cur = 0, lang = 'en';
+
+        function setLang(l) {
+            lang = l;
+            document.getElementById('btnEN').classList.toggle('active', l === 'en');
+            document.getElementById('btnUZ').classList.toggle('active', l === 'uz');
+            document.body.classList.toggle('uz', l === 'uz');
+            if (document.getElementById('modal').classList.contains('open')) updateCaption();
+        }
+
+        function openModal(i) {
+            cur = i;
+            document.getElementById('modalImg').src = srcs[i];
+            document.getElementById('counter').textContent = (i + 1) + ' / ' + srcs.length;
+            updateCaption();
+            document.getElementById('modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function prev(e) { e.stopPropagation(); cur = (cur - 1 + srcs.length) % srcs.length; openModal(cur); }
+        function next(e) { e.stopPropagation(); cur = (cur + 1) % srcs.length; openModal(cur); }
+        function updateCaption() { document.getElementById('caption').textContent = uzCaptions[cur]; }
+
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('modal').classList.contains('open')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') prev(e);
+            if (e.key === 'ArrowRight') next(e);
+        });
+    </script>
+</body>
+</html>
